@@ -1,0 +1,5 @@
+<form action="{% url "saisie_order" %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Demander la prédiction de la segmentation du client" />
+</form>
