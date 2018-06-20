@@ -25,8 +25,8 @@ SECRET_KEY = '(!!bjjx7cruqqj)3&cp-psq%iir1ug4=zt)q8v8%c!l#x6&x@a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = ['prediction-vols-jpv.herokuapp.com']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['customer-predict.herokuapp.com']
+#ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -120,4 +120,4 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
