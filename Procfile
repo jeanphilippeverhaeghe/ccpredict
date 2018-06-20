@@ -1,1 +1,1 @@
-web: gunicorn ccpredict.wsgi
+web: gunicorn ccp.wsgi
