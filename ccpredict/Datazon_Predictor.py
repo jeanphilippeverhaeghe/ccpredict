@@ -18,6 +18,7 @@ def predict(Code_Client, Date_Cde = datetime(2011,12,10), Nb_Art = 1, Nb_Art_Dif
 
     Return
     prediction: number of the cluster (integer)
+    comment: comment on the prediction with type of customer and cluster (text)
     """
 
     #Lecture du fichier seg_custom2_with_cluster_end_1.2.csv
@@ -90,7 +91,10 @@ def predict(Code_Client, Date_Cde = datetime(2011,12,10), Nb_Art = 1, Nb_Art_Dif
     print(Date_Cde)
     print(ante_date_der_cde)
 
-    delais = Date_Cde - datetime.date(ante_date_der_cde)
+    if client_existe:
+        delais = Date_Cde - datetime.date(ante_date_der_cde)
+    else:
+        delais = Date_Cde - ante_date_der_cde
     nb_jour_depuis_der_cde = delais.days
     nb_jour_entre_2_cdes = ((ante_nb_jour_entre_2_cdes * ante_nb_cde) + delais.days) / (ante_nb_cde + 1)
 
@@ -138,4 +142,56 @@ def predict(Code_Client, Date_Cde = datetime(2011,12,10), Nb_Art = 1, Nb_Art_Dif
     #Prédiction
     prediction = lr.predict(df)
 
-    return prediction[0]
+
+    #################################################
+    #Recherche des caractéristiques du cluster prédit
+    #Création d'un Data_Frame avec les données en moyenne par cluster
+    seg_customer = seg_custom_O.loc[:,['Cluster_KM_V2','Nb_Total_Cdes', 'Nb_Total_Articles',
+                                  'Nb_Dates_Distinctes_Cdes', 'Mnt_Moyen_Cdes',
+                                  'Nb_Moyen_Article_par_Cdes', 'Nb_Moyen_Article_Diff_par_Cdes',
+                                  'Nb_Jour_Depuis_Derniere_Cde', 'Nb_Jour_Entre_2_Cdes', 'Mnt_Total_Cdes']]
+    par_cluster  = seg_customer.groupby("Cluster_KM_V2")
+    mean_par_cluster=par_cluster.mean()
+
+    #Recherche du Cluster du client dans cette analyse des Clusters
+    mean_par_cluster_client = mean_par_cluster.iloc[mean_par_cluster.index.values == prediction]
+
+    #Recherche des caractéristiques des clients de ce cluster
+    seg_nb_cde = str(int(mean_par_cluster_client['Nb_Total_Cdes'].values[0]))
+    seg_nb_art = str(int(mean_par_cluster_client['Nb_Total_Articles'].values[0]))
+    seg_nb_dates_dist_cdes = str(int(mean_par_cluster_client['Nb_Dates_Distinctes_Cdes'].values[0]))
+    seg_mnt_moyen_cde = str(int(mean_par_cluster_client['Mnt_Moyen_Cdes'].values[0]))
+    seg_nb_moyen_art_cde = str(int(mean_par_cluster_client['Nb_Moyen_Article_par_Cdes'].values[0]))
+    seg_nb_moyen_art_diff_cde = str(int(mean_par_cluster_client['Nb_Moyen_Article_Diff_par_Cdes'].values[0]))
+    seg_nb_jour_depuis_der_cde = str(int(mean_par_cluster_client['Nb_Jour_Depuis_Derniere_Cde'].values[0]))
+    seg_nb_jour_entre_2_cdes = str(int(mean_par_cluster_client['Nb_Jour_Entre_2_Cdes'].values[0]))
+    seg_mnt_total_cdes = str(int(mean_par_cluster_client['Mnt_Total_Cdes'].values[0]))
+
+    commentaire1 = "Sur l'année " + seg_nb_cde + " commandes, pour " + seg_nb_art + \
+                    " articles et un total de " + seg_mnt_total_cdes + " GBP."
+    commentaire2 = seg_nb_moyen_art_cde + " articles par commande, " + seg_nb_moyen_art_diff_cde + " articles différents par commande."
+    commentaire3 = "Le montant moyen d'une commande est de " + seg_mnt_moyen_cde + " GBP."
+    commentaire4 = seg_nb_jour_entre_2_cdes + " jours entre deux commandes " + seg_nb_jour_depuis_der_cde + \
+                    " jours depuis la dernière commande."
+    if client_existe:
+        commentaire0 = "Vous n'etes pas un nouveau client, vous entrez dans un segment de client caractérisé par:"
+    else:
+        commentaire0 = "Vous etes un nouveau client, vous entrez dans un segment de client caractérisé par:"
+
+    if prediction == 0:
+        commentaire5 = "Des petites commandes (en montant et en unités), en général de nouveaux clients"
+    elif prediction == 1:
+        commentaire5 = "Cluster non représenté, car clients trés particuliers"
+    elif prediction == 2:
+        commentaire5 = "Bcp de commandes, beaucoup d'article au global et par commande.\n"  +  \
+                       "Des commandes très fréquentes (6J). Ce sont les meilleurs clients en fréquence et en montants"
+    elif prediction == 3:
+        commentaire5 = "Des petites commandes, sur un nombre varié d'articles. Des commandes très fréquentes (7J)"
+    elif prediction == 4:
+        commentaire5 = "Des petites commandes, sur un nombre varié d'articles. Des commandes peu fréquentes"
+
+    commentaire_lien = "Les clients de votre segments se caractérisent par les moyennes suivantes: "
+    final_commentaire = commentaire0 + "\n" + commentaire5 + "\n" + commentaire_lien + \
+                        "\n" + commentaire1 + "\n" + commentaire2 + "\n" + commentaire3 + "\n" + commentaire4
+
+    return prediction[0], final_commentaire

@@ -29,10 +29,10 @@ def saisie_order(request):
         print ("Mnt_Cde: ",Mnt_Cde)
 
         from . import Datazon_Predictor
-        pred = Datazon_Predictor.predict(Code_Client, Date_Cde, NbArticles, NbArticlesDiff, Mnt_Cde)
-        comment_pred = "Prédiction via Réseux de Neurones"
+        pred , comment_pred = Datazon_Predictor.predict(Code_Client, Date_Cde, NbArticles, NbArticlesDiff, Mnt_Cde)
+        #comment_pred = "Prédiction via Réseaux de Neurones"
 
-        form.fields['Prediction'].label="Prédiction de la segmentation ClienT: " + str(pred)
+        form.fields['Prediction'].label="Prédiction du segment du Client: " + str(pred) + " (soit Cluster " + str(pred) + ")"
         form.fields['Comment_Prediction'].label="Commentaire sur la prédiction: " + comment_pred
 
     # Quoiqu'il arrive, on affiche la page du formulaire.
