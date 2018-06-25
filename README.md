@@ -1,9 +1,7 @@
-# Prediction du type de client par segmentation.
+# Prediction du segment auquel appartient un client de Datazon lors d'une commande.
 
-#### Differentes routes de prediction:
-* https://movie-recommender-jpv.herokuapp.com/ : ***Bienvenue sur le site de prediction  de retard / avance de vols d'avions*** 
-* https://prediction-vols-jpv.herokuapp.com/prediction_vols2/ : taper ***'/prediction_vols2/'*** pour une prédiction via la régression *ridge*
-* https://prediction-vols-jpv.herokuapp.com/prediction_vols/ : taper ***'/prediction_vols/'*** pour une prédiction via *SGD* (Descente de Gradient Stochastique)
-* https://prediction-vols-jpv.herokuapp.com/saisie_param/ : taper ***'/saisie_param/'*** pour saisir les parametres de la regression *ridge*
+### Differentes routes de prediction:
 
+* https://customer-predict.herokuapp.com/ : ***Bienvenue sur le site de prediction du segment auquel appartient un client de Datazone***
 
+* https://customer-predict.herokuapp.com/ccpredict/ : tapez ***'/ccpredict/'*** pour une prédiction via un *réseau de neurones*

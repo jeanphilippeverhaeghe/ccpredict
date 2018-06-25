@@ -25,8 +25,8 @@ SECRET_KEY = '(!!bjjx7cruqqj)3&cp-psq%iir1ug4=zt)q8v8%c!l#x6&x@a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['customer-predict.herokuapp.com']
-#ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['customer-predict.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
