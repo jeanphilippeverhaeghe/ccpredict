@@ -29,20 +29,6 @@ def predict(Code_Client, Date_Cde = datetime(2011,12,10), Nb_Art = 1, Nb_Art_Dif
     seg_custom.set_index(seg_custom["CustomerID"],inplace=True)
     seg_custom = seg_custom.drop(['CustomerID'], axis=1)
 
-    # Destruction des deux clients très particuliers:
-    #Cherchons automatiquement quel est le cluster concerné
-    #   (c'est forcément le dernier dans la série renvoyée par value_counts)
-    ma_serie = seg_custom['Cluster_KM_V2'].value_counts()
-    cluster_a_eliminer = ma_serie.index[-1]
-
-    #Recherche de leurs indexes
-    Liste_Index = seg_custom.loc[seg_custom.Cluster_KM_V2 == cluster_a_eliminer].index.values
-    Liste_Index = list(Liste_Index)
-
-    #Elimination
-    if len(Liste_Index) == 2 :
-        seg_custom = seg_custom.drop(Liste_Index)
-
     #Copie de base du DF
     seg_custom_O = seg_custom.copy()
 
@@ -179,16 +165,17 @@ def predict(Code_Client, Date_Cde = datetime(2011,12,10), Nb_Art = 1, Nb_Art_Dif
         commentaire0 = "Vous etes un nouveau client, vous entrez dans un segment de client caractérisé par:"
 
     if prediction == 0:
-        commentaire5 = "Des petites commandes (en montant et en unités), en général de nouveaux clients"
+        commentaire5 = "Mnt de commandes moyen, Très peu de fréquence, volume d'articles par commande moyen"
     elif prediction == 1:
-        commentaire5 = "Cluster non représenté, car clients trés particuliers"
+        commentaire5 = "Mnt de commandes faibles, Mais fréquence. Volume d'articles par commande moye"
     elif prediction == 2:
-        commentaire5 = "Bcp de commandes, beaucoup d'article au global et par commande.\n"  +  \
-                       "Des commandes très fréquentes (6J). Ce sont les meilleurs clients en fréquence et en montants"
+        commentaire5 = "Une commande par an, pas de commandes depuis longtemps. Peu d'articles par commande"
     elif prediction == 3:
-        commentaire5 = "Des petites commandes, sur un nombre varié d'articles. Des commandes très fréquentes (7J)"
+        commentaire5 = "Peu de commandes, mais de forts montants, beaucoup d'articles par commande." + \
+                       "Le 2ème segment en montant. Mais peu de clients de ce  type"
     elif prediction == 4:
-        commentaire5 = "Des petites commandes, sur un nombre varié d'articles. Des commandes peu fréquentes"
+        commentaire5 = "Bcp de commandes, fréquentes, les plus gros montants de commandes." + \
+                       "Mais peu de clients de ce type"
 
     commentaire_lien = "Les clients de votre segments se caractérisent par les moyennes suivantes: "
     final_commentaire = commentaire0 + "\n" + commentaire5 + "\n" + commentaire_lien + \

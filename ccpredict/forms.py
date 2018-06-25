@@ -9,7 +9,7 @@ class SaisieCommandeForm(forms.Form):
     NbArticlesDiff = forms.IntegerField(label= "Nb d'articles différents", required = True, min_value=1)
     Mnt_Cde = forms.DecimalField(label= "Montant Commande", required = True, min_value=0)
 
-    Prediction = forms.BooleanField(label="Prediction du type de client ==> ", required = False, disabled= True)
+    Prediction = forms.BooleanField(label="Prédiction du segment du Client", required = False, disabled= True)
     Comment_Prediction = forms.BooleanField(label="Commentaire sur la prediction", required = False, disabled= True)
     def __str__(self):
         return self.titre
