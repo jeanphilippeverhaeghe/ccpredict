@@ -153,31 +153,31 @@ def predict(Code_Client, Date_Cde = datetime(2011,12,10), Nb_Art = 1, Nb_Art_Dif
     seg_nb_jour_entre_2_cdes = str(int(mean_par_cluster_client['Nb_Jour_Entre_2_Cdes'].values[0]))
     seg_mnt_total_cdes = str(int(mean_par_cluster_client['Mnt_Total_Cdes'].values[0]))
 
-    commentaire1 = "Sur l'année " + seg_nb_cde + " commandes, pour " + seg_nb_art + \
-                    " articles et un total de " + seg_mnt_total_cdes + " GBP."
+    commentaire1 = seg_nb_cde + " commandes sur l'année, pour " + seg_nb_art + \
+                    " articles et un total de " + seg_mnt_total_cdes + " GBP. "
     commentaire2 = seg_nb_moyen_art_cde + " articles par commande, " + seg_nb_moyen_art_diff_cde + " articles différents par commande."
-    commentaire3 = "Le montant moyen d'une commande est de " + seg_mnt_moyen_cde + " GBP."
+    commentaire3 = "Le montant moyen d'une commande est de " + seg_mnt_moyen_cde + " GBP. "
     commentaire4 = seg_nb_jour_entre_2_cdes + " jours entre deux commandes " + seg_nb_jour_depuis_der_cde + \
-                    " jours depuis la dernière commande."
+                    " jours depuis la dernière commande. "
     if client_existe:
-        commentaire0 = "Vous n'etes pas un nouveau client, vous entrez dans un segment de client caractérisé par:"
+        commentaire0 = str(Code_Client) + " n'est pas un nouveau client, il entre dans un segment de clients caractérisés par: "
     else:
-        commentaire0 = "Vous etes un nouveau client, vous entrez dans un segment de client caractérisé par:"
+        commentaire0 = str(Code_Client) + " est un nouveau client, il entre dans un segment de clients caractérisés par: "
 
     if prediction == 0:
-        commentaire5 = "Mnt de commandes moyen, Très peu de fréquence, volume d'articles par commande moyen"
+        commentaire5 = "Mnt de commandes moyen. Très peu de fréquence. Volume d'articles par commande moyen. "
     elif prediction == 1:
-        commentaire5 = "Mnt de commandes faibles, Mais fréquence. Volume d'articles par commande moye"
+        commentaire5 = "Mnt de commandes faibles. Mais fréquence. Volume d'articles par commande moyen. "
     elif prediction == 2:
-        commentaire5 = "Une commande par an, pas de commandes depuis longtemps. Peu d'articles par commande"
+        commentaire5 = "Env. 1 commande par an. Pas de commandes depuis longtemps. Peu d'articles par commande. "
     elif prediction == 3:
-        commentaire5 = "Peu de commandes, mais de forts montants, beaucoup d'articles par commande." + \
-                       "Le 2ème segment en montant. Mais peu de clients de ce  type"
+        commentaire5 = "Peu de commandes. Montants forts.  Nombreux articles par commande. " + \
+                       "Le 2ème segment en montant. Peu de clients de ce type. "
     elif prediction == 4:
-        commentaire5 = "Bcp de commandes, fréquentes, les plus gros montants de commandes." + \
-                       "Mais peu de clients de ce type"
+        commentaire5 = "Bcp de commandes. Très forts montants de commandes. " + \
+                       "Peu de clients de ce type. "
 
-    commentaire_lien = "Les clients de votre segments se caractérisent par les moyennes suivantes: "
+    commentaire_lien = "Les clients de ce segment se caractérisent par les moyennes suivantes: "
     final_commentaire = commentaire0 + "\n" + commentaire5 + "\n" + commentaire_lien + \
                         "\n" + commentaire1 + "\n" + commentaire2 + "\n" + commentaire3 + "\n" + commentaire4
 
